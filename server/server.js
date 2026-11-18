@@ -7,6 +7,8 @@ import createReadingTable from "./models/readings.js";
 
 // import routes
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/user.js";
+import { authMiddleware } from "./midlewares/token-verification.js";
 
 dotenv.config();
 
@@ -30,8 +32,10 @@ app.use(cors({
 
 app.get('/', (req, res)=> res.send("Welcome to Sweety server! Login to access your data"));
 
-// routes
+// Routes
 app.use("/api/auth/", authRoutes);
+app.use(authMiddleware());
+app.use("/api/user/", userRoutes);
 
 const PORT = process.env.PORT|| 7000;
 app.listen(PORT, ()=>{
