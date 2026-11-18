@@ -1,3 +1,8 @@
+*{
+  margin:0;
+  padding:0;
+  font-family:'Plus Jakarta Sans', sans-serif;
+}
 .container{
   min-height: 100vh;
   min-width: 100wh;
@@ -21,6 +26,14 @@ input{
   min-height: 1.7rem;
   border-radius: 5px;
   border: 1px solid white;
+  padding-left:5px;
+  padding-right:5px;
+}
+input::placeholder{
+  padding: 5px;
+}
+.small-text{
+  font-size: 0.7rem;  
 }
 form{
   display : flex;
