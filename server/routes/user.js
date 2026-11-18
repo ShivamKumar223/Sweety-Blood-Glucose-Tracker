@@ -1,5 +1,5 @@
 import express from "express";
-import { addReading, deleteReading, getReadings, updateReading } from "../controllers/user";
+import { addReading, deleteReading, getReadings, updateReading } from "../controllers/user.js";
 
 const router = express.Router();
 

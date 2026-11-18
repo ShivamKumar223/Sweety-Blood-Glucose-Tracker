@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+
 import pool from "./config/db.js";
 import createUserTable from "./models/user.js";
 import createReadingTable from "./models/readings.js";
@@ -33,9 +35,8 @@ app.use(cors({
 app.get('/', (req, res)=> res.send("Welcome to Sweety server! Login to access your data"));
 
 // Routes
-app.use("/api/auth/", authRoutes);
-app.use(authMiddleware());
-app.use("/api/user/", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/user", authMiddleware, userRoutes);
 
 const PORT = process.env.PORT|| 7000;
 app.listen(PORT, ()=>{

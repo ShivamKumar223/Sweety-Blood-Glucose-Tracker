@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import pool from "../config/db";
+import pool from "../config/db.js";
 
 export const handleSignup = async (req, res)=>{
 
