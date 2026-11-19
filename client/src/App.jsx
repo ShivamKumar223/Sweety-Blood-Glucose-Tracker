@@ -1,3 +1,4 @@
+import { StrictMode } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
@@ -7,8 +8,11 @@ import { SignupPage } from "./pages/Signup.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { NotFound } from "./pages/NotFound.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
-// import Dashboard from "./pages/Dashboard";
-// import NotFound from "./pages/NotFound";
+
+import { ReadingProvider } from "./context/ReadingContext.jsx";
+import { ProfileProvider } from "./context/ProfileContext.jsx";
+import { Reports } from "./pages/Reports.jsx";
+import { AddNewReading } from "./pages/addNewReading.jsx"
 
 const router = createBrowserRouter([
   {
@@ -25,6 +29,14 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard",
                 element: <Dashboard />
+            },
+            {
+                path: "/reports",
+                element: <Reports />
+            },
+            {
+                path: "/addNewReading",
+                element: <AddNewReading />
             }
         ]
     },
@@ -36,8 +48,14 @@ const router = createBrowserRouter([
 
 function App() {
   return <>
-      <ToastContainer position="top-right" autoClose={3000} />
-      <RouterProvider router={router} />;
+  <StrictMode>
+  <ProfileProvider>
+       <ReadingProvider>
+          <ToastContainer position="top-right" autoClose={3000} />
+          <RouterProvider router={router} />;
+      </ReadingProvider>
+  </ProfileProvider>
+  </StrictMode>
   </> 
 }
 

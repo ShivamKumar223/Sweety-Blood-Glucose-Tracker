@@ -5,7 +5,7 @@ export const NotFound = ()=>{
 
     return <div className="container flex-center flex-column">
         Page Not Found!
-        <button className="flex-center" onClick={() => navigate(-1)}><IoIosArrowRoundBack/>  Back</button>
+        <button className="flex-center button" onClick={() => navigate(-1)}><IoIosArrowRoundBack/>  Back</button>
     </div>
 
 }

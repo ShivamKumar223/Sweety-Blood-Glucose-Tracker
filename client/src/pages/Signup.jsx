@@ -85,7 +85,7 @@ export const SignupPage = () => {
                 value={data.tempPassword}
                 onChange={(e) => setData({ ...data, tempPassword: e.target.value })}
             />
-            <button type="submit">
+            <button className="button" type="submit">
                 sign up
             </button>
 

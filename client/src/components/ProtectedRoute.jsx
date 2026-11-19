@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom"
 import API from "../api/axios";
+import { Navbar } from "./Navbar";
 
 export const ProtectedRoute = ()=>{
     const navigate = useNavigate();
@@ -28,5 +29,8 @@ export const ProtectedRoute = ()=>{
     },[]);
 
     if(loading) return <p>Checking authentication...</p>;
-    return <Outlet />
+    return <div className="container flex">
+            <Navbar/>
+            <Outlet />
+    </div>
 }
