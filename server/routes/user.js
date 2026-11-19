@@ -1,5 +1,5 @@
 import express from "express";
-import { addReading, deleteReading, getReadings, updateReading } from "../controllers/user.js";
+import { addReading, deleteReading, getProfile, getReadings, updateReading } from "../controllers/user.js";
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ router.get("/verify", (req, res) => {
 });
 
 // User functional routes
+router.get("/profile", getProfile);
 router.post("/reading", addReading);
 router.get("/readings", getReadings);
 router.patch("/reading/:readingId", updateReading);

@@ -9,6 +9,7 @@ export const handleSignup = async (req, res)=>{
 
     if (!name || !email || !password) {
             return res.status(400).json({
+                success : false,
                 message: "All fields are required"
             });
         }
@@ -39,7 +40,6 @@ export const handleSignup = async (req, res)=>{
     return res.status(201).json({
         success : true,
         message : "Log created successfully.",
-        data : {...user}
     })
 }
 catch(error){

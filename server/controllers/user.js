@@ -1,15 +1,58 @@
 import pool from "../config/db.js";
 
+// =>
+export const getProfile = async (req, res) => {
+    try {
+        const userId = req.user.userId;
+
+        const query = `
+            SELECT id, name, email
+            FROM users
+            WHERE id = $1
+        `;
+
+        const result = await pool.query(query, [userId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: result.rows[0]
+        });
+    }
+    catch (error) {
+        console.log("Profile Error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    }
+};
+
+// =>
 export const addReading = async (req, res) =>{
    try {
         const { date, time_slot, value } = req.body;
         const userId = req.user.userId;
 
         // Validate required fields
-        if (!date || !time_slot || value === undefined) {
+        if (!date || !time_slot) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required."
+            });
+        }
+        // validate value
+        if (value === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: "Please enter a glucose value."
             });
         }
 
@@ -42,7 +85,7 @@ export const addReading = async (req, res) =>{
         if (date > today) {
             return res.status(400).json({
             success: false,
-            message: "Future date is not allowed."
+            message: "Date cannot be in the future."
         });
        }
 
@@ -60,7 +103,7 @@ export const addReading = async (req, res) =>{
         if (existingReading.rows.length > 0) {
             return res.status(409).json({
                 success: false,
-                message: "Reading already exists for this time slot."
+                message: `You already have ${time_slot=="Morning"?"a":"an"} ${time_slot} reading for this date.`
             });
         }
         
@@ -93,8 +136,7 @@ export const addReading = async (req, res) =>{
 }
 
 
-// extract all readings
-
+// => extract all readings
 export const getReadings = async (req, res) => {
     try {
         const userId = req.user.userId;
@@ -112,7 +154,7 @@ export const getReadings = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Readings fetched successfully.",
-            readings: result.rows
+            data : result.rows
         });
 
     } catch (error) {
@@ -126,8 +168,7 @@ export const getReadings = async (req, res) => {
 };
 
 
-// update existing reading
-
+// => update existing reading
 export const updateReading = async (req, res) => {
     try {
         const { id } = req.params;
@@ -218,7 +259,7 @@ export const updateReading = async (req, res) => {
 };
 
 
-// Delete existing reading
+// => Delete existing reading
 export const deleteReading = async (req, res) => {
     try {
         const { id } = req.params;
