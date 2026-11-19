@@ -6,6 +6,7 @@ import { LoginPage } from "./pages/Login.jsx";
 import { SignupPage } from "./pages/Signup.jsx";
 import { Dashboard } from "./pages/Dashboard.jsx";
 import { NotFound } from "./pages/NotFound.jsx";
+import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 // import Dashboard from "./pages/Dashboard";
 // import NotFound from "./pages/NotFound";
 
@@ -19,9 +20,14 @@ const router = createBrowserRouter([
     element: <SignupPage />,
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
-  },
+    element: <ProtectedRoute />,
+    children: [
+            {
+                path: "/dashboard",
+                element: <Dashboard />
+            }
+        ]
+    },
   {
     path: "*",
     element: <NotFound />,
