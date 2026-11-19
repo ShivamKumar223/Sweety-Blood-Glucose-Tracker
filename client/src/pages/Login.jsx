@@ -14,7 +14,7 @@ export const LoginPage = () => {
         {
             if(data[key].trim() === "")
             {
-                toast.warning("All field is required");
+                toast.warning("All fields are required");
                 return;
             }
         }
@@ -29,17 +29,15 @@ export const LoginPage = () => {
             toast.success(res.data.message);
             navigate("/dashboard");
         }
-        else{
-            toast.warning(res.data.message);
-        }
+        
     }
     catch(error)
     {
-        console.log("Error:", error);
-        console.log("Response:", error.response?.data);
-        console.log("Status:", error.response?.status);
+        // console.log("Error:", error);
+        // console.log("Response:", error.response?.data);
+        // console.log("Status:", error.response?.status);
 
-        toast.error("Login failed");
+        toast.error(error.response?.data?.message || "Login failed");
     }
     }
 

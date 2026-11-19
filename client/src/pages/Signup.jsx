@@ -42,14 +42,14 @@ export const SignupPage = () => {
             toast.success(res.data.message);
             navigate("/");
          }
-         else{ 
-            toast.warning(res.data?.message);
-         }
 
          console.log("Sign-up : ", res);
         }
         catch(error){
-            toast.error("Registration failed");
+            // console.log("Error:", error);
+            // console.log("Response:", error.response?.data);
+            // console.log("Status:", error.response?.status);
+            toast.error(error.response?.data?.message || "Registration failed");
         }
         
     }
