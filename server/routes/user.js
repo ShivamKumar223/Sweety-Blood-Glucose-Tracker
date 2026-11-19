@@ -3,6 +3,13 @@ import { addReading, deleteReading, getReadings, updateReading } from "../contro
 
 const router = express.Router();
 
+// verify user
+router.get("/verify", (req, res) => {
+    return res.status(200).json({
+        success: true,
+    });
+});
+
 // User functional routes
 router.post("/reading", addReading);
 router.get("/readings", getReadings);
