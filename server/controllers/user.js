@@ -171,7 +171,7 @@ export const getReadings = async (req, res) => {
 // => update existing reading
 export const updateReading = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { readingId } = req.params;
         const { date, time_slot, value } = req.body;
 
         const userId = req.user.userId;
@@ -231,7 +231,7 @@ export const updateReading = async (req, res) => {
             date,
             time_slot,
             value,
-            id,
+            readingId,
             userId
         ]);
 
@@ -262,7 +262,7 @@ export const updateReading = async (req, res) => {
 // => Delete existing reading
 export const deleteReading = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { readingId } = req.params;
         const userId = req.user.userId;
 
         // Delete reading
@@ -272,7 +272,7 @@ export const deleteReading = async (req, res) => {
             RETURNING id
         `;
 
-        const result = await pool.query(query, [id, userId]);
+        const result = await pool.query(query, [readingId, userId]);
 
         if (result.rows.length === 0) {
             return res.status(404).json({
@@ -287,7 +287,7 @@ export const deleteReading = async (req, res) => {
         });
 
     } catch (error) {
-        console.log("Delete Reading Error:", error.message);
+        // console.log("Delete Reading Error:", error.message);
 
         return res.status(500).json({
             success: false,

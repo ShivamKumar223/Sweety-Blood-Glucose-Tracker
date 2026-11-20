@@ -14,7 +14,7 @@ router.get("/verify", (req, res) => {
 router.get("/profile", getProfile);
 router.post("/reading", addReading);
 router.get("/readings", getReadings);
-router.patch("/reading/:readingId", updateReading);
+router.put("/reading/:readingId", updateReading);
 router.delete("/reading/:readingId", deleteReading);
 
 export default router;
