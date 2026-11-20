@@ -165,3 +165,12 @@ Full Stack Developer
 GitHub: https://github.com/ShivamKumar223
 
 Portfolio: https://shivam-fullstack-developer.netlify.app/
+
+
+---
+
+## Note
+
+This project is fully functional. If you encounter any issues or have questions regarding the project, feel free to contact me. I'll be happy to help you.
+
+**Contact (WhatsApp):** 7366865889
