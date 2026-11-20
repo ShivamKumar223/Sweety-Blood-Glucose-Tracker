@@ -1,8 +1,10 @@
 import { useState } from "react";
 import API from "../api/axios";
 import { toast } from "react-toastify";
+import { useReadings } from "../context/ReadingContext";
 
 export const AddNewReading =  () => {
+    const { fetchReadings } = useReadings();
     const [readingData, setReadingData] = useState({time_slot:"", date:null, value:""});
 
     const handleSubmit = async (e) =>{
@@ -15,6 +17,7 @@ export const AddNewReading =  () => {
             value: readingData.value===""?undefined:readingData.value
         });
         if(res.data?.success){
+            fetchReadings();
             toast.success(res.data.message)
         }
         }

@@ -13,6 +13,7 @@ import { ReadingProvider } from "./context/ReadingContext.jsx";
 import { ProfileProvider } from "./context/ProfileContext.jsx";
 import { Reports } from "./pages/Reports.jsx";
 import { AddNewReading } from "./pages/addNewReading.jsx"
+import { UpdateReading } from "./pages/updateReading.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: "/addNewReading",
                 element: <AddNewReading />
+            },
+            {
+                path: "/updateReading",
+                element: <UpdateReading />
             }
         ]
     },

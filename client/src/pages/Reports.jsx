@@ -4,11 +4,13 @@ import { useReadings } from "../context/ReadingContext";
 
 export const Reports = () => {
     const { readings, loading } = useReadings();
-    const [intendedReadings, setIntendedReading] = useState([]);
+
     const [reportType, setReportType] = useState("daily");
+
     const [selectedDate, setSelectedDate] = useState(
         new Date().toISOString().split("T")[0]
     );
+
     const [selectedMonth, setSelectedMonth] = useState(() => {
         const d = new Date();
         d.setMonth(d.getMonth() - 1);
@@ -18,6 +20,7 @@ export const Reports = () => {
     const [report, setReport] = useState(null);
     const [error, setError] = useState("");
 
+    // Get date range according to report type
     const getDateRange = () => {
         if (reportType === "daily") {
             return {
@@ -41,53 +44,75 @@ export const Reports = () => {
 
             const startDate = `${selectedMonth}-01`;
 
-            // Last day of selected month
+            // Get last day of the selected month
             const lastDay = new Date(year, month, 0).getDate();
 
             const endDate = `${selectedMonth}-${String(lastDay).padStart(2, "0")}`;
 
-            return { startDate, endDate };
+            return {
+                startDate,
+                endDate
+            };
         }
     };
 
-    const handleViewReport = async () => {
+    // Generate report
+    const handleViewReport = () => {
         setError("");
         setReport(null);
-        
+
         const { startDate, endDate } = getDateRange();
-            if (intendedReadings.length === 0) {
-                setReport({
-                    intendedReadings: [],
-                    total: 0,
-                    highest: null,
-                    lowest: null,
-                    average: null,
-                    startDate,
-                    endDate
-                });
-                return;
-            }
-            if(reportType == "daily")
-            {
-                
+
+        // Filter readings according to selected date range
+        const intendedReadings = readings.filter((reading) => {
+            const readingDate = new Date(reading.date)
+                .toLocaleDateString("en-CA");
+
+            if (reportType === "daily") {
+                return readingDate === selectedDate;
             }
 
-            const values = intendedReadings.map(r => Number(r.value));
+            return readingDate >= startDate && readingDate <= endDate;
+        });
 
-            const total = values.length;
-            const highest = Math.max(...values);
-            const lowest = Math.min(...values);
-            const average = values.reduce((sum, val) => sum + val, 0) / total;
-
+        // If no readings are found
+        if (intendedReadings.length === 0) {
             setReport({
-                intendedReadings,
-                total,
-                highest,
-                lowest,
-                average,
+                intendedReadings: [],
+                total: 0,
+                highest: null,
+                lowest: null,
+                average: null,
                 startDate,
                 endDate
             });
+
+            return;
+        }
+
+        // Extract reading values
+        const values = intendedReadings.map((reading) =>
+            Number(reading.value)
+        );
+
+        // Calculate report statistics
+        const total = values.length;
+        const highest = Math.max(...values);
+        const lowest = Math.min(...values);
+
+        const average =
+            values.reduce((sum, value) => sum + value, 0) / total;
+
+        // Store final report
+        setReport({
+            intendedReadings,
+            total,
+            highest,
+            lowest,
+            average,
+            startDate,
+            endDate
+        });
     };
 
     return (
@@ -95,7 +120,7 @@ export const Reports = () => {
             <h1>Reports</h1>
             <p>View and analyze your glucose readings.</p>
 
-            {/* Report Type */}
+            {/* Report Controls */}
             <div className="report-controls">
                 <div className="form-group">
                     <label>Report Type</label>
@@ -113,7 +138,7 @@ export const Reports = () => {
                     </select>
                 </div>
 
-                {/* Daily and MTD date */}
+                {/* Daily and MTD Date */}
                 {(reportType === "daily" || reportType === "mtd") && (
                     <div className="form-group">
                         <label>Select Date</label>
@@ -129,7 +154,7 @@ export const Reports = () => {
                     </div>
                 )}
 
-                {/* Monthly selection */}
+                {/* Monthly Selection */}
                 {reportType === "monthly" && (
                     <div className="form-group">
                         <label>Select Month</label>
@@ -160,13 +185,12 @@ export const Reports = () => {
             {/* Report Result */}
             {report && (
                 <div className="report-result">
-
                     <h2>
                         {reportType === "daily"
                             ? "Daily Report"
                             : reportType === "mtd"
-                            ? "Month-to-Date Report"
-                            : "Monthly Report"}
+                                ? "Month-to-Date Report"
+                                : "Monthly Report"}
                     </h2>
 
                     <p>
@@ -175,7 +199,6 @@ export const Reports = () => {
 
                     {/* Summary Cards */}
                     <div className="report-summary">
-
                         <div className="report-card">
                             <h3>Total Readings</h3>
                             <p>{report.total}</p>
@@ -203,39 +226,9 @@ export const Reports = () => {
                                     : "--"} mg/dL
                             </p>
                         </div>
-
                     </div>
 
-                    {/* Individual readings: Daily report only */}
-                    {reportType === "daily" && (
-                        <div className="daily-Readings">
-                            <h3>Daily Readings</h3>
-
-                            {report.intendedReadings.length === 0 ? (
-                                <p>No readings found for this date.</p>
-                            ) : (
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Time Slot</th>
-                                            <th>Reading</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        {report.intendedReadings.map((reading) => (
-                                            <tr key={reading.id}>
-                                                <td>{reading.time_slot}</td>
-                                                <td>
-                                                    {reading.value} mg/dL
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            )}
-                        </div>
-                    )}
+                    
                 </div>
             )}
         </div>
